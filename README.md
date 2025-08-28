@@ -16,7 +16,7 @@ Mettre en place un cluster Kubernetes léger avec **K3d**, installer **Argo CD**
 
 ## ✅ Étapes à réaliser
 
-1. **Installer Docker** sur ta machine hôte  |❌|
+1. **Installer Docker** sur ta machine hôte  |✅|
 
 2. **Installer K3d** (outil qui lance K3s dans Docker)  |❌|
 

@@ -1,0 +1,11 @@
+here was an error while executing `VBoxManage`, a CLI used by Vagrant
+for controlling VirtualBox. The command and stderr is shown below.
+
+Command: ["startvm", "ce614427-ca70-4925-8075-270dc12059e4", "--type", "headless"]
+
+Stderr: VBoxManage: error: VirtualBox can't operate in VMX root mode. Please disable the KVM kernel extension, recompile your kernel and reboot (VERR_VMX_IN_VMX_ROOT_MODE)
+VBoxManage: error: Details: code NS_ERROR_FAILURE (0x80004005), component ConsoleWrap, interface IConsole
+
+islem@islem-VirtualBox:~/Bureau/Inception-of-things/p1$ sudo modprobe -r kvm_intel
+islem@islem-VirtualBox:~/Bureau/Inception-of-things/p1$ sudo modprobe -r kvm
+
