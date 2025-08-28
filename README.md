@@ -1,48 +1,56 @@
-# 🚀 Inception of Things – Partie 1 : K3s et Vagrant
+# 🚀 Inception of Things – Partie 2 : K3d et Argo CD
 
-## Étapes à réaliser
+## 🎯 Objectif
+Mettre en place un cluster Kubernetes léger avec **K3d**, installer **Argo CD** et déployer une première application en mode **GitOps**.
 
-1. **Créer le dossier `p1/` à la racine du repo** ✅
+---
 
-2. **Écrire un `Vagrantfile`**  ✅ 
+## 📚 Notions à connaître
+- **Docker** : conteneurs vs VM, commandes de base (`docker ps`, `docker images`, `docker run`).
+- **K3d** : créer, gérer et supprimer un cluster Kubernetes dans Docker.
+- **kubectl** : commandes essentielles pour interagir avec le cluster.
+- **Argo CD** : installation, accès à l’UI, gestion des applications.
+- **GitOps** : Git comme source de vérité → Argo CD déploie automatiquement.
 
+---
 
-5. **Activer l’accès SSH sans mot de passe aux deux VMs**  
-   (Vagrant le permet via clé, vérifier avec `vagrant ssh tebandamS` et `vagrant ssh tebandamSW`)  
+## ✅ Étapes à réaliser
+
+1. **Installer Docker** sur ta machine hôte  |❌|
+
+2. **Installer K3d** (outil qui lance K3s dans Docker)  |❌|
+
+3. **Créer un cluster K3d minimal**  |❌|
+   - Exemple : `k3d cluster create iot-cluster --servers 1 --agents 2`
+
+4. **Vérifier le cluster avec kubectl**  
+   - `kubectl get nodes`  
+   - `kubectl get pods -A`  
    ❌
 
-6. **Provisionner les paquets de base (`curl`, `ca-certificates`)**  
-   (via un script `scripts/install_base.sh`)  
-   ❌
+5. **Installer Argo CD dans le cluster**  |❌|
+   - `kubectl create namespace argocd`  
+   - `kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml`  
 
-7. **Installer K3s sur `loginS` en mode server** et sur `loginSW` en mode agent,  
-   avec un **K3S_TOKEN** commun et `K3S_URL=https://192.168.56.110:6443`  
-   ❌
+6. **Accéder à l’UI Argo CD**  |❌|
+   - `kubectl port-forward svc/argocd-server -n argocd 8080:443`  
+   - Interface accessible sur [https://localhost:8080](https://localhost:8080)  
 
-8. **Installer `kubectl`** (fourni par K3s côté serveur) et rendre le kubeconfig accessible à l’utilisateur  
-   (copier `/etc/rancher/k3s/k3s.yaml` dans `/home/vagrant/` et exporter `KUBECONFIG`)  
-   ❌
+7. **Récupérer le mot de passe admin Argo CD**  |❌|
+   - `kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath="{.data.password}" | base64 -d`  
 
-9. **Désactiver le swap** sur les deux VMs (préconisé pour K8s/K3s)  
-   ❌
+8. **Déployer une application simple avec Argo CD**  |❌|
+   - Exemple : un Nginx ou une page HTML depuis un repo Git.  
 
-10. **Démarrer les VMs** avec `vagrant up` et attendre que l’agent rejoigne le server  
-    ❌
+9. **Vérifier que l’application est bien déployée dans le cluster** |❌| 
+   - `kubectl get pods -n <namespace>`  
+   - `kubectl get svc -n <namespace>`  
 
-11. **Vérifier le réseau/les IP** avec `ip a show eth1`  
-    (elles doivent correspondre à `.110` et `.111`)  
-    ❌
+10. **Documenter ton travail dans le dossier `p2/`**  |❌|
+   - `Vagrantfile` (si besoin pour tests Docker/K3d)  
+   - Manifests Argo CD / App  
+   - README clair avec captures / explications  
 
-12. **Contrôler l’état du cluster** depuis `loginS` :  
-    - `kubectl get nodes` → voir **2 nœuds** (server + agent)  
-    - `systemctl status k3s` ou `systemctl status k3s-agent` si besoin  
-    ❌
+---
 
-13. **Nettoyer/organiser le repo** :  
-    - `p1/Vagrantfile`  
-    - `p1/scripts/`  
-    - `p1/confs/`  
-    ❌
-
-14. **Préparer la démo** : montrer une VM mal configurée vs bien configurée (exemples du sujet) et expliquer les choix  
-    ❌
+✅
