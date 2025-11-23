@@ -1,0 +1,7 @@
+Commands to launch vagrant:
+	sudo modprobe -r kvm_intel
+	sudo modprobe -r kvm
+
+
+port-forward for p3:
+	kubectl port-forward svc/wil-playground -n dev 8888:8888 2>&1 >/dev/null &
